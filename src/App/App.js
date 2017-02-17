@@ -4,9 +4,6 @@ import Search from '../Search/Search.js'
 import Table from '../Table/Table.js'
 import './App.css';
 
-const isSearched = (searchTerm) => (item) =>
-  !searchTerm || item.title.toLowerCase().includes(searchTerm.toLowerCase());
-
 class App extends Component {
   constructor(props) {
     super(props);
@@ -32,6 +29,13 @@ class App extends Component {
     this.setState({list: updatedList});
   }
 
+  isSearched(searchTerm) {
+    return function(item) {
+      return !searchTerm
+        || item.title.toLowerCase().includes(searchTerm.toLowerCase());
+    }
+  }
+
   render() {
     const { searchTerm, list } = this.state;
     return (
@@ -44,7 +48,7 @@ class App extends Component {
         </Search>
         <Table
           list={list}
-          isSearched={isSearched}
+          isSearched={this.isSearched}
           pattern={searchTerm}
           onDismiss={this.onDismiss}
         />
